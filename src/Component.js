@@ -8,9 +8,9 @@ export default class Component {
         this.#props = props;
 
         this.setup(); //state 초기화 함수
-        this.render();
         this.setEvent();
-        this.mounted();//컴포넌트가 마운트 된 직후 호출
+        this.render();
+        // this.mounted();//컴포넌트가 마운트 된 직후 호출// 
     }
 
     set state(state) {
@@ -19,26 +19,30 @@ export default class Component {
     get state() {
         return this.#state;
     }
-
     get target() {
         return this.#target
     }
 
     setup() { } //state정의
+    template() { return ''; }
     render() {
         this.#target.innerHTML = this.template();
-        this.setEvent();
+        // this.mounted();
     }
-    mounted() {
-    }
-    template() {
-        return '';
-    }
+    mounted() { }
     setEvent() { }
-    addEvent(event, selector, callback) { }
+    addEvent(eventType, selector, callback) {
+        const children = [...this.#target.querySelectorAll(selector)];
+        const isTarget = (target) => children.includes(target) || target.closest(selector);
+        this.#target.addEventListener(eventType, e => {
+            if (!isTarget(e.target)) return false;
+            callback(e);
+        })
 
-    setState(nextState) {
-        this.state = { ...this.state, ...nextState };
+        return this
+    }
+    setState(newState) {
+        this.#state = { ...this.#state, ...newState };
         this.render();
     }
 }

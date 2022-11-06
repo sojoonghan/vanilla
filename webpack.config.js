@@ -1,8 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin")
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const webpack = require('webpack');
 
 
 module.exports = {
@@ -15,30 +13,19 @@ module.exports = {
         filename: "[name].js"
     },
     devServer: {
-        hot: true,
-        port: 5000,
+        port: 9999,
         compress: true,
         client: {
             overlay: {
                 errors: true,
             },
         },
+        hot: true,
         open: true,
-        // constentBase: path.resolve(__dirname, "public")
-
+        historyApiFallback: true,
     },
-    // exclude: /node_modules/,
-    // query: {
-    //     cacheDirectory: true,
-    //     presets: ["es2021", "react"],
-    // },
-
     module: {
         rules: [
-            // {
-            //     test: /\.css$/,
-            //     use: ["style-loader", "css-loader"],
-            // },
             {
                 test: /\.js$/,
                 use: {
@@ -49,11 +36,9 @@ module.exports = {
         ]
     },
     plugins: [
-        // new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({
             template: path.join(__dirname, 'public', 'index.html')
         }),
         new CleanWebpackPlugin(),
-        // new MiniCssExtractPlugin(),
     ],
 }
