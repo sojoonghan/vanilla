@@ -5,9 +5,7 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin")
 
 module.exports = {
     mode: "development", //production | development |none
-    entry: {
-        main: './src/main.js'
-    },
+    entry: ["@babel/polyfill", './src/main.js'],
     output: {
         path: path.resolve(__dirname, "build"),
         filename: "[name].js"
@@ -30,6 +28,10 @@ module.exports = {
                 test: /\.js$/,
                 use: {
                     loader: "babel-loader",
+                    options: {
+                        presets: ["@babel/preset-env"],
+                        plugins: ["@babel/plugin-proposal-class-properties"],
+                    }
                 },
                 exclude: /node_modules/,
             },
